@@ -1,0 +1,233 @@
+﻿<!DOCTYPE html>
+
+<!--
+	Това е макет на първото домашно задание по ОКГ.	Задачата
+	е да направите вашия йероглиф само чрез използваните до
+	момента в упражненията неща.
+	
+	Йероглифът трябва да е с размери 20х20 и дебелина 10.
+	Най-горе на страницата трябва да сложите име, фамилия,
+	група и факултетен номер.
+	
+	Макетът създава и движи сцената, земята и светлините
+	чрез функцията createScene(). Ако ѝ се подаде true,
+	то се рисува прозрачна кутия с малко по-големи размери,
+	в която да се постави йероглифа.
+	
+	За да не е празен макетът, има код за създаванена седем
+	наклонени плоскости. Махнете този код и сложете своя
+	код за йероглифа.
+-->
+	
+<html>
+	<head>
+		<script src="three.min.js"></script>
+
+		<script>
+			// функция за създаване на сцената
+			function createScene(addFrame)
+			{
+				// нагласяване на цвета и центрирането на текста с имената ви
+				document.getElementsByTagName('h1')[0].style = 'color:white; text-align:center;';
+
+				// създаване на рисувателното поле на цял екран
+				renderer = new THREE.WebGLRenderer({antialias:true});
+				renderer.setSize( window.innerWidth, window.innerHeight );
+				document.body.appendChild( renderer.domElement );
+				renderer.domElement.style = 'width:100%; height:100%; position:fixed; top:0; left:0; z-index:-1;';
+				
+				// създаване на сцена и камера
+				scene = new THREE.Scene();
+				camera = new THREE.PerspectiveCamera( 30, window.innerWidth/window.innerHeight, 0.1, 1000 );
+
+				// създаване на земята като плоска равнина
+				var ground = new THREE.Mesh(
+					new THREE.PlaneGeometry(13000,13000),
+					new THREE.MeshPhongMaterial({color:'goldenrod'})
+				);
+				ground.position.set(0,-11,0);
+				ground.rotation.set(-Math.PI/2,0,0);
+				scene.add( ground );
+
+				// ако сме поискали (чрез параметър true),
+				// създаваме полупрозрачна рамка около зоната,
+				//в която трябва да е поместен йероглифа
+				if (addFrame)
+				{
+					// прозрачи стени
+					var walls = new THREE.Mesh(
+						new THREE.BoxGeometry(21,21,11),
+						new THREE.MeshPhongMaterial({color:'white',shininess:220,opacity:0.6,transparent:true,side:THREE.DoubleSide})
+					);
+					scene.add(walls);
+
+					// тънък бял кант
+					var frame = new THREE.BoxHelper(walls);
+					frame.material.color.set('white');
+					scene.add( frame );
+				}
+
+				// създаване на четири светлини с различни цветове
+				lights=[];
+				var colors=['dodgerblue','hotpink','cyan','fuchsia'];
+				for (var i=0; i<4; i++)
+				{
+					lights[i] = new THREE.PointLight(colors[i],1);
+					scene.add(lights[i]);
+				}
+				
+				// активиране на анимацията
+				drawFrame();
+			}
+			
+			// функция за анимиране на сцената
+			var t = 0; // време
+			function drawFrame()
+			{
+				requestAnimationFrame( drawFrame );
+				
+				t++;
+				
+				// леко въртене на сцената
+				scene.rotation.x = Math.sin(t/135)/10;
+				scene.rotation.y = Math.sin(t/200)/2;
+				scene.rotation.z = Math.cos(t/111)/10;
+
+				// приближаване и отдалечаване на камерата
+				camera.position.set(0,3,60+10*Math.sin(t/250));
+				camera.lookAt(new THREE.Vector3(0,0,0));
+
+				// движение на светлините
+				for (var i=0; i<4; i++)
+				{
+					var angle = t/100+Math.PI/2*i;
+					lights[i].position.set(
+						15*Math.cos(angle),
+						10*Math.sin(1.5*angle)+5,
+						10);
+				}
+				
+				//рисуване на сцената
+				renderer.render( scene, camera );
+			}		
+		</script>
+	</head>
+	
+	<body>
+		<!-- тук сложете вашите данни -->
+		<h1>ф.н. 81260 &ndash; група 3 &ndash; Илонка Илиева</h1>
+		
+		<script>
+			createScene(false); // true=има рамка; false=няма рамка
+
+			var shape = new THREE.Shape();
+			shape.moveTo(274.5, 180);
+			shape.lineTo(219.79, 180);
+			shape.quadraticCurveTo(214.45, 201.79, 214.31, 201.79);
+			shape.lineTo(256.35, 201.79);
+			shape.lineTo(256.35, 350.71);
+			shape.lineTo(153.84, 350.71);
+			shape.lineTo(153.84, 254.25);
+			shape.lineTo(142.59, 265.78);
+			shape.quadraticCurveTo(136.82, 261.7, 131.9, 254.25);
+			shape.lineTo(131.34, 254.25);
+			shape.quadraticCurveTo(128.53, 354.79, 126.14, 370.96);
+			shape.quadraticCurveTo(123.75, 387.14, 112.85, 391.99);
+			shape.quadraticCurveTo(101.95, 396.84, 95.34, 396.84);
+			shape.quadraticCurveTo(89.71, 396.84, 72.84, 393.89);
+			shape.lineTo(69.75, 370.96);
+			shape.quadraticCurveTo(72.14, 371.25, 80.71, 373.35);
+			shape.quadraticCurveTo(89.29, 375.46, 93.65, 375.46);
+			shape.quadraticCurveTo(98.71, 375.46, 101.6, 372.51);
+			shape.quadraticCurveTo(104.48, 369.56, 105.32, 365.34);
+			shape.quadraticCurveTo(106.17, 361.12, 107.92, 327.72);
+			shape.quadraticCurveTo(109.68, 294.32, 109.4, 272.39);
+			shape.lineTo(84.37, 272.39);
+			shape.quadraticCurveTo(81.98, 364.92, 29.67, 402.04);
+			shape.lineTo(13.5, 385.87);
+			shape.quadraticCurveTo(38.95, 367.73, 50.62, 342.70);
+			shape.quadraticCurveTo(62.29, 317.67, 62.71, 272.39);
+			shape.lineTo(43.45, 272.39);
+			shape.lineTo(43.45, 255.65);
+			shape.quadraticCurveTo(36.56, 264.37, 31.07, 268.59);
+			shape.lineTo(14.62, 253.68);
+			shape.quadraticCurveTo(30.65, 241.87, 43.24, 213.39);
+			shape.quadraticCurveTo(55.82, 184.92, 58.5, 155.81);
+			shape.lineTo(78.6, 163.26);
+			shape.quadraticCurveTo(77.2, 182.95, 67.64, 209.67);
+			shape.quadraticCurveTo(58.07, 236.39, 46.96, 251.43);
+			shape.lineTo(129.09, 251.43);
+			shape.quadraticCurveTo(100.96, 207.84, 93.09, 156.65);
+			shape.lineTo(112.92, 149.2);
+			shape.quadraticCurveTo(126.56, 217.4, 153.84, 245.1);
+			shape.lineTo(153.84, 201.79);
+			shape.lineTo(191.81, 201.79);
+			shape.lineTo(197.29, 180);
+			shape.lineTo(137.95, 180);
+			shape.lineTo(137.95, 158.9);
+			shape.lineTo(274.5, 158.9);
+			shape.lineTo(274.5, 180);
+			
+			var hole1 = new THREE.Path();
+			hole1.moveTo(234.42, 243.28);
+			hole1.lineTo(234.42, 222.89);
+			hole1.lineTo(175.64, 222.89);
+			hole1.lineTo(175.64, 243.28);
+			hole1.lineTo(234.42, 243.28);
+			shape.holes.push(hole1);
+			
+			var hole2 = new THREE.Path();
+			hole2.moveTo(234.42, 286.17);
+			hole2.lineTo(234.42, 264.37);
+			hole2.lineTo(175.64, 264.37);
+			hole2.lineTo(175.64, 286.17);
+			hole2.lineTo(234.42, 286.17);
+			shape.holes.push(hole2);
+			
+			var hole3 = new THREE.Path();
+			hole3.moveTo(234.42, 329.76);
+			hole3.lineTo(234.42, 307.26);
+			hole3.lineTo(175.64, 307.26);
+			hole3.lineTo(175.64, 329.76);
+			hole3.lineTo(234.42, 329.76);
+			shape.holes.push(hole3);
+			
+			var shape2 = new THREE.Shape();
+			shape2.moveTo(275.625, 389.6719);
+			shape2.quadraticCurveTo(270.42, 396, 260.01, 404.85);
+			shape2.quadraticCurveTo(242.57, 381.23, 203.34, 368.01);	
+			shape2.quadraticCurveTo(206.15, 365.9, 211.99, 360.28);
+			shape2.quadraticCurveTo(217.82, 354.65, 220.92, 352.4);
+			shape2.quadraticCurveTo(256.5, 364.5, 275.62, 389.67);
+			
+			var shape3 = new THREE.Shape();
+			shape3.moveTo(197.29, 368.01);
+			shape3.quadraticCurveTo(173.39, 392.34, 137.95, 401.48);
+			shape3.lineTo(124.45, 382.64);
+			shape3.quadraticCurveTo(161.71, 374.76, 184.35, 353.1);
+			shape3.lineTo(197.29, 368.01);
+			
+			var extrudeSettings = { amount: 10, bevelEnabled: false, curveSegments: 100 };
+			
+			var geometry = new THREE.ExtrudeGeometry( shape, extrudeSettings );
+			var element = new THREE.Mesh(geometry, new THREE.MeshPhongMaterial());
+		
+			var geometry2 = new THREE.ExtrudeGeometry( shape2, extrudeSettings );
+			var element2 = new THREE.Mesh(geometry2, new THREE.MeshPhongMaterial());
+			
+			var geometry3 = new THREE.ExtrudeGeometry( shape3, extrudeSettings );
+			var element3 = new THREE.Mesh(geometry3, new THREE.MeshPhongMaterial());
+			
+			var kanji = new THREE.Object3D();
+			kanji.add(element);
+			kanji.add(element2);
+			kanji.add(element3);
+		
+			kanji.scale.set(0.075, 0.077, 1);
+			kanji.position.set(-11, 21.5, 5);
+			kanji.rotation.set(Math.PI, 0, 0);
+			scene.add(kanji);
+			
+		</script>
+	</body>
+</html>
