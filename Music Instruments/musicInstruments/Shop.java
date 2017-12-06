@@ -80,7 +80,6 @@ public class Shop {
 		}
 	}
 	
-	
 	public void printInstrumentsByType() {
 		for(InstrumentType type : instruments.keySet()){
 			System.out.println("========================="+ type +"========================");
